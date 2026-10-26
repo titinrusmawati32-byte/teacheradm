@@ -12,7 +12,7 @@ const APP_CONFIG = {
   // (Didapat dari: Deploy > New deployment / Manage deployments > Web app URL)
   // Contoh: 'https://script.google.com/macros/s/AKfycbx.../exec'
   // =========================================================================
-  DEFAULT_API_URL: '',
+  DEFAULT_API_URL: 'https://script.google.com/macros/s/AKfycbx4vhGzWDTSL-Mi9hLllbEspef8h_IeyxdiHS-NEqUd1YpjS5aODl50iCmBpCQK71CICQ/exec',
 
   /**
    * Mengambil URL Web App yang berjalan di belakang layar
