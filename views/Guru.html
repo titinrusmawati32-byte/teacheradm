@@ -1,12 +1,20 @@
 <div id="guruView" class="app-shell hidden">
+  <!-- Mobile Sidebar Overlay Backdrop -->
+  <div id="guruSidebarOverlay" class="sidebar-overlay" onclick="App.closeSidebar('guruSidebar')"></div>
+
   <!-- Sidebar Guru -->
   <aside id="guruSidebar" class="sidebar">
     <div class="sidebar-header">
-      <div class="brand-logo-icon" style="width: 36px; height: 36px; font-size: 1rem; margin-bottom: 0;">👨‍🏫</div>
-      <div>
-        <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--primary); line-height: 1.2;">PORTAL GURU</h3>
-        <span class="badge badge-guru" style="font-size: 0.65rem;">GURU SD</span>
+      <div class="flex items-center gap-3">
+        <div class="brand-logo-icon" style="width: 36px; height: 36px; font-size: 1rem; margin-bottom: 0;">👨‍🏫</div>
+        <div>
+          <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--primary); line-height: 1.2;">PORTAL GURU</h3>
+          <span class="badge badge-guru" style="font-size: 0.65rem;">GURU SD</span>
+        </div>
       </div>
+      <button class="sidebar-close-btn" onclick="App.closeSidebar('guruSidebar')" aria-label="Tutup Menu">
+        ✕
+      </button>
     </div>
 
     <nav class="sidebar-nav">

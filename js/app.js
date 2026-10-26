@@ -183,7 +183,21 @@ const App = {
 
   toggleSidebar: function(sidebarId) {
     const el = document.getElementById(sidebarId);
-    if (el) el.classList.toggle('open');
+    const overlay = document.getElementById(sidebarId + 'Overlay') || document.getElementById('adminSidebarOverlay') || document.getElementById('sidebarOverlay');
+    if (el) {
+      const isOpen = el.classList.toggle('open');
+      if (overlay) {
+        if (isOpen) overlay.classList.add('active');
+        else overlay.classList.remove('active');
+      }
+    }
+  },
+
+  closeSidebar: function(sidebarId) {
+    const el = document.getElementById(sidebarId);
+    const overlay = document.getElementById(sidebarId + 'Overlay') || document.getElementById('adminSidebarOverlay') || document.getElementById('sidebarOverlay');
+    if (el) el.classList.remove('open');
+    if (overlay) overlay.classList.remove('active');
   },
 
   // ==========================================
@@ -200,19 +214,27 @@ const App = {
     const activeNav = document.getElementById('adminNav-' + tabName);
     if (activeNav) activeNav.classList.add('active');
 
-    document.getElementById('adminSection-dashboard').classList.add('hidden');
-    document.getElementById('adminSection-users').classList.add('hidden');
+    const adminSections = [
+      'dashboard', 'sekolah', 'kelas', 'siswa', 'guru',
+      'mapel', 'jadwal', 'users', 'absensi', 'nilai', 'pengaturan'
+    ];
+    adminSections.forEach(s => {
+      const secEl = document.getElementById('adminSection-' + s);
+      if (secEl) secEl.classList.add('hidden');
+    });
+
+    const targetSection = document.getElementById('adminSection-' + tabName);
+    if (targetSection) {
+      targetSection.classList.remove('hidden');
+    }
 
     if (tabName === 'dashboard') {
-      document.getElementById('adminSection-dashboard').classList.remove('hidden');
       this.loadAdminStats();
     } else if (tabName === 'users') {
-      document.getElementById('adminSection-users').classList.remove('hidden');
       this.loadUsersTable();
     }
 
-    const sb = document.getElementById('adminSidebar');
-    if (sb) sb.classList.remove('open');
+    this.closeSidebar('adminSidebar');
   },
 
   loadAdminStats: async function() {
