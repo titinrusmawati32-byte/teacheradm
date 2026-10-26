@@ -252,7 +252,11 @@ const App = {
   // LOGIKA ADMIN PORTAL (11 MODUL PENUH)
   // ==========================================
   initAdminDashboard: function() {
-    document.getElementById('adminCurrentUserName').innerText = this.state.user.fullName;
+    const fullName = this.state.user ? this.state.user.fullName : 'Administrator';
+    const curUserEl = document.getElementById('adminCurrentUserName');
+    if (curUserEl) curUserEl.innerText = fullName;
+    const sbUserEl = document.getElementById('adminSidebarUserName');
+    if (sbUserEl) sbUserEl.innerText = fullName;
     this.switchAdminTab('dashboard');
   },
 
@@ -260,6 +264,25 @@ const App = {
     document.querySelectorAll('#adminSidebar .nav-item').forEach(el => el.classList.remove('active'));
     const activeNav = document.getElementById('adminNav-' + tabName);
     if (activeNav) activeNav.classList.add('active');
+
+    // Dynamic Hero Heading update
+    const heroHeadings = {
+      dashboard: 'Your Stats',
+      sekolah: 'Data Sekolah',
+      kelas: 'Manajemen Kelas',
+      siswa: 'Data Siswa',
+      guru: 'Data Pendidik',
+      mapel: 'Mata Pelajaran',
+      jadwal: 'Kelola Jadwal',
+      users: 'Manajemen Pengguna',
+      absensi: 'Monitoring Absensi',
+      nilai: 'Monitoring Nilai',
+      pengaturan: 'Pengaturan Sistem'
+    };
+    const heroTitleEl = document.getElementById('adminHeroHeading');
+    if (heroTitleEl && heroHeadings[tabName]) {
+      heroTitleEl.innerText = heroHeadings[tabName];
+    }
 
     const adminSections = [
       'dashboard', 'sekolah', 'kelas', 'siswa', 'guru',
@@ -1212,7 +1235,11 @@ const App = {
   // LOGIKA GURU PORTAL
   // ==========================================
   initGuruDashboard: function() {
-    document.getElementById('guruCurrentUserName').innerText = this.state.user.fullName;
+    const fullName = this.state.user ? this.state.user.fullName : 'Guru SD';
+    const curUserEl = document.getElementById('guruCurrentUserName');
+    if (curUserEl) curUserEl.innerText = fullName;
+    const sbUserEl = document.getElementById('guruSidebarUserName');
+    if (sbUserEl) sbUserEl.innerText = fullName;
     this.switchGuruTab('dashboard');
     this.loadGuruDashboardData();
   },
@@ -1221,6 +1248,11 @@ const App = {
     document.querySelectorAll('#guruSidebar .nav-item').forEach(el => el.classList.remove('active'));
     const activeNav = document.getElementById('guruNav-' + tabName);
     if (activeNav) activeNav.classList.add('active');
+
+    const heroTitleEl = document.getElementById('guruHeroHeading');
+    if (heroTitleEl) {
+      heroTitleEl.innerText = tabName === 'dashboard' ? 'Dashboard Pembelajaran' : 'Data Kelas Binaan';
+    }
 
     document.getElementById('guruSection-dashboard').classList.add('hidden');
     document.getElementById('guruSection-classes').classList.add('hidden');
