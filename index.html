@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>ADMINISTRASI GURU SD</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Top Banner: Status Koneksi Backend Apps Script -->
+  <aside class="api-banner">
+    <div id="apiStatusText">Memeriksa koneksi ke Google Apps Script...</div>
+    <div>
+      <a onclick="App.openApiConfigModal()">⚙️ Atur URL Web App</a>
+    </div>
+  </aside>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Global Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+    <p id="loadingMessage" style="margin-top: 1rem; font-weight: 600; color: var(--text-secondary); font-size: 0.9375rem;">
+      Memproses data...
+    </p>
+  </div>
+
+  <!-- Modal: Konfigurasi URL Google Apps Script Web App -->
+  <div id="apiConfigModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="card-title">Pengaturan Koneksi Backend Apps Script</h3>
+        <button class="btn btn-outline btn-sm" onclick="App.closeApiConfigModal()">✕</button>
+      </div>
+      <form onsubmit="App.saveApiConfig(event)">
+        <div class="modal-body">
+          <p class="text-sm text-secondary" style="margin-bottom: 1rem;">
+            Karena Frontend di-hosting di GitHub dan Database/Backend di Google Apps Script, aplikasi ini membutuhkan URL Web App yang telah di-deploy.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label" for="apiConfigUrl">URL Google Apps Script Web App</label>
+            <input
+              type="url"
+              id="apiConfigUrl"
+              class="form-control"
+              placeholder="https://script.google.com/macros/s/.../exec"
+              required
+            />
+            <small class="text-xs text-muted" style="display:block; margin-top: 4px;">
+              Diperoleh dari menu <strong>Deploy > Manage deployments > Web app URL</strong> di Google Apps Script.
+            </small>
+          </div>
+
+          <div style="background-color:#eff6ff; border:1px solid #bfdbfe; border-radius: var(--radius-sm); padding:0.75rem; font-size:0.75rem; color:#1e40af;">
+            <strong>Tips Pengaturan Deployment:</strong><br />
+            Pastikan pada saat membuat Web App Deployment di Apps Script:<br />
+            • <em>Execute as</em>: <code>Me (email Anda)</code><br />
+            • <em>Who has access</em>: <code>Anyone</code>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline btn-sm" onclick="App.closeApiConfigModal()">Tutup</button>
+          <button type="submit" class="btn btn-primary btn-sm">Simpan & Uji Koneksi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Fitur Dalam Tahap Pengembangan (Fase 2) -->
+  <div id="inDevelopmentModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="card-title">Fitur Dalam Pengembangan</h3>
+        <button class="btn btn-outline btn-sm" onclick="App.closeInDevelopmentModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="flex items-center gap-4" style="margin-bottom: 1rem;">
+          <div style="font-size: 2.5rem;">🚧</div>
+          <div>
+            <h4 class="font-bold text-sm" id="devFeatureName">Nama Fitur</h4>
+            <p class="text-xs text-muted" style="margin-top: 0.25rem;">Tahap 2 Pengembangan Sistem</p>
+          </div>
+        </div>
+        <div style="background-color: var(--warning-light); border: 1px solid #fde68a; border-radius: var(--radius-sm); padding: 0.875rem; font-size: 0.8125rem; color: #92400e; line-height: 1.5;">
+          Modul ini dijadwalkan untuk dirilis pada tahap pengembangan berikutnya. Seluruh skema database Google Sheets telah disiapkan dan siap menerima fungsionalitas penuh.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" onclick="App.closeInDevelopmentModal()">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Tambah Pengguna Baru (Admin) -->
+  <div id="addUserModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="card-title">Tambah Pengguna Baru</h3>
+        <button class="btn btn-outline btn-sm" onclick="App.closeAddUserModal()">✕</button>
+      </div>
+      <form id="addUserForm" onsubmit="App.submitAddUser(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="newUsername">Username *</label>
+            <input type="text" id="newUsername" class="form-control" placeholder="Contoh: guru_ahmad" required>
+            <small class="text-xs text-muted">Huruf kecil, angka, garis bawah, titik (min. 3 karakter).</small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="newPassword">Kata Sandi Awal *</label>
+            <input type="password" id="newPassword" class="form-control" placeholder="Minimal 8 karakter" required minlength="8">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="newFullName">Nama Lengkap & Gelar *</label>
+            <input type="text" id="newFullName" class="form-control" placeholder="Contoh: Ahmad Dahlan, S.Pd." required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="newRole">Peran (Hak Akses) *</label>
+            <select id="newRole" class="form-control" required>
+              <option value="GURU">GURU (Tenaga Pendidik)</option>
+              <option value="ADMIN">ADMIN (Administrator Sekolah)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="newEmail">Email</label>
+            <input type="email" id="newEmail" class="form-control" placeholder="nama@sekolah.sch.id">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="newNip">NIP (Opsional)</label>
+            <input type="text" id="newNip" class="form-control" placeholder="18 digit NIP">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="newNuptk">NUPTK (Opsional)</label>
+            <input type="text" id="newNuptk" class="form-control" placeholder="16 digit NUPTK">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="newNoHp">Nomor WhatsApp / HP</label>
+            <input type="text" id="newNoHp" class="form-control" placeholder="08xxxxxxxxxx">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline btn-sm" onclick="App.closeAddUserModal()">Batal</button>
+          <button type="submit" class="btn btn-primary btn-sm">Simpan Akun</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- VIEW 1: LOGIN -->
+  <!-- ======================================================== -->
+  <div id="loginView" class="login-wrapper hidden">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="brand-logo-icon">🏫</div>
+        <h2 style="font-size: 1.375rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em;">
+          ADMINISTRASI GURU SD
+        </h2>
+        <p class="text-sm text-muted" style="margin-top: 0.25rem;">
+          Sistem Administrasi Pembelajaran Sekolah Dasar
+        </p>
+      </div>
+
+      <form id="loginForm" onsubmit="App.handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="loginUsername">Username</label>
+          <input
+            type="text"
+            id="loginUsername"
+            class="form-control"
+            placeholder="Masukkan username Anda"
+            autocomplete="username"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Kata Sandi</label>
+          <input
+            type="password"
+            id="loginPassword"
+            class="form-control"
+            placeholder="Masukkan kata sandi"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          id="loginSubmitBtn"
+          class="btn btn-primary w-full"
+          style="padding: 0.75rem; margin-top: 0.5rem; font-size: 0.9375rem;"
+        >
+          Masuk ke Aplikasi
+        </button>
+      </form>
+
+      <div style="margin-top: 1.5rem; padding: 0.875rem; border-radius: var(--radius-sm); background-color: #f1f5f9; font-size: 0.75rem; color: var(--text-secondary); border: 1px solid var(--border-color);">
+        <strong>ℹ️ Kredensial Akun Awal:</strong><br />
+        Username: <code style="color: var(--primary); font-weight: bold;">admin</code><br />
+        Kata Sandi: <code style="color: var(--primary); font-weight: bold;">AdminPassword123!</code><br />
+        <span class="text-muted" style="display:inline-block; margin-top: 4px;">Akun Guru dibuat oleh Admin melalui menu Manajemen Pengguna.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- VIEW 2: PORTAL ADMIN -->
+  <!-- ======================================================== -->
+  <div id="adminView" class="app-shell hidden">
+    <!-- Sidebar Admin -->
+    <aside id="adminSidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo-icon" style="width: 36px; height: 36px; font-size: 1rem; margin-bottom: 0;">🏫</div>
+        <div>
+          <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--primary); line-height: 1.2;">ADMIN GURU SD</h3>
+          <span class="badge badge-admin" style="font-size: 0.65rem;">PORTAL ADMIN</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-group-title">Menu Utama</div>
+        <a id="adminNav-dashboard" class="nav-item active" onclick="App.switchAdminTab('dashboard')">
+          <span class="nav-icon">📊</span> Dashboard Admin
+        </a>
+        <a id="adminNav-users" class="nav-item" onclick="App.switchAdminTab('users')">
+          <span class="nav-icon">👥</span> Manajemen Pengguna
+        </a>
+
+        <div class="nav-group-title">Data Master (Fase 2)</div>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Data Sekolah')">
+          <span class="nav-icon">🏫</span> Data Sekolah <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Manajemen Kelas')">
+          <span class="nav-icon">🏛️</span> Manajemen Kelas <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Manajemen Mata Pelajaran')">
+          <span class="nav-icon">📚</span> Mata Pelajaran <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Kelola Jadwal')">
+          <span class="nav-icon">🗓️</span> Kelola Jadwal <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+
+        <div class="nav-group-title">Monitoring & Pengaturan</div>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Monitoring Absensi')">
+          <span class="nav-icon">📋</span> Monitoring Absensi <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Monitoring Nilai')">
+          <span class="nav-icon">📈</span> Monitoring Nilai <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Pengaturan Sistem')">
+          <span class="nav-icon">⚙️</span> Pengaturan Sistem <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-outline w-full text-sm" onclick="App.handleLogout()">
+          <span>🚪</span> Keluar (Logout)
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="flex items-center gap-4">
+          <button class="mobile-menu-toggle" onclick="App.toggleSidebar('adminSidebar')">☰</button>
+          <div>
+            <h2 style="font-size: 1rem; font-weight: 700; color: var(--text-primary);" id="adminInfoSekolah">SD NEGERI CONTOH 01</h2>
+            <span class="text-xs text-muted" id="adminInfoTP">Tahun Pelajaran: 2026/2027 Ganjil</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div style="text-align: right;">
+            <div class="font-semibold text-sm" id="adminCurrentUserName">Administrator</div>
+            <span class="badge badge-admin text-xs">ADMIN</span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="App.handleLogout()">Keluar</button>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <!-- Section: Dashboard Overview -->
+        <section id="adminSection-dashboard">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div>
+                <div class="stat-val" id="adminStatGuru">0</div>
+                <div class="stat-label">Total Guru Terdaftar</div>
+              </div>
+              <div class="stat-icon" style="background-color: #e0f2fe; color: #0284c7;">👨‍🏫</div>
+            </div>
+
+            <div class="stat-card">
+              <div>
+                <div class="stat-val" id="adminStatSiswa">0</div>
+                <div class="stat-label">Total Siswa Aktif</div>
+              </div>
+              <div class="stat-icon" style="background-color: #fef3c7; color: #d97706;">🎒</div>
+            </div>
+
+            <div class="stat-card">
+              <div>
+                <div class="stat-val" id="adminStatKelas">0</div>
+                <div class="stat-label">Rombongan Belajar</div>
+              </div>
+              <div class="stat-icon" style="background-color: #dcfce7; color: #16a34a;">🏛️</div>
+            </div>
+
+            <div class="stat-card">
+              <div>
+                <div class="stat-val" id="adminStatMapel">0</div>
+                <div class="stat-label">Mata Pelajaran</div>
+              </div>
+              <div class="stat-icon" style="background-color: #f3e8ff; color: #9333ea;">📚</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Aksi Cepat Administrator</h3>
+            </div>
+            <div class="card-body flex gap-4" style="flex-wrap: wrap;">
+              <button class="btn btn-primary text-sm" onclick="App.switchAdminTab('users'); App.openAddUserModal();">
+                ➕ Tambah Akun Guru/Admin
+              </button>
+              <button class="btn btn-outline text-sm" onclick="App.openInDevelopmentModal('Manajemen Kelas')">
+                🏛️ Buat Kelas Baru (Fase 2)
+              </button>
+              <button class="btn btn-outline text-sm" onclick="App.openInDevelopmentModal('Data Sekolah')">
+                🏫 Profil Sekolah (Fase 2)
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Log Aktivitas Sistem Terkini (Google Sheets)</h3>
+              <button class="btn btn-outline btn-sm" onclick="App.loadAdminStats()">Perbarui Log</button>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 170px;">Waktu</th>
+                    <th>Pengguna</th>
+                    <th>Aksi</th>
+                    <th>Keterangan</th>
+                  </tr>
+                </thead>
+                <tbody id="adminRecentLogsBody">
+                  <tr><td colspan="4" class="text-center text-muted" style="padding: 2rem;">Memuat log aktivitas...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Manajemen Pengguna -->
+        <section id="adminSection-users" class="hidden">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Manajemen Akun Pengguna</h3>
+                <p class="text-xs text-muted" style="margin-top: 0.25rem;">
+                  Admin berwenang membuat akun Guru baru dan mengelola status akses.
+                </p>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="App.openAddUserModal()">
+                ➕ Tambah Pengguna Baru
+              </button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Nama Lengkap</th>
+                    <th>Email</th>
+                    <th>Peran</th>
+                    <th>Status</th>
+                    <th>Login Terakhir</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                  <tr><td colspan="7" class="text-center text-muted" style="padding: 2rem;">Memuat data pengguna...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- VIEW 3: PORTAL GURU -->
+  <!-- ======================================================== -->
+  <div id="guruView" class="app-shell hidden">
+    <!-- Sidebar Guru -->
+    <aside id="guruSidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo-icon" style="width: 36px; height: 36px; font-size: 1rem; margin-bottom: 0;">👨‍🏫</div>
+        <div>
+          <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--primary); line-height: 1.2;">PORTAL GURU</h3>
+          <span class="badge badge-guru" style="font-size: 0.65rem;">GURU SD</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-group-title">Menu Guru</div>
+        <a id="guruNav-dashboard" class="nav-item active" onclick="App.switchGuruTab('dashboard')">
+          <span class="nav-icon">📊</span> Dashboard Guru
+        </a>
+        <a id="guruNav-classes" class="nav-item" onclick="App.switchGuruTab('classes')">
+          <span class="nav-icon">🏛️</span> Data Kelas Binaan
+        </a>
+
+        <div class="nav-group-title">Administrasi Pembelajaran</div>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Absensi Siswa')">
+          <span class="nav-icon">📝</span> Absensi Siswa <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Input Nilai')">
+          <span class="nav-icon">🎯</span> Input Nilai <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Jadwal Pembelajaran')">
+          <span class="nav-icon">🗓️</span> Jadwal Pembelajaran <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Perencanaan Pembelajaran')">
+          <span class="nav-icon">📖</span> Perencanaan (RPP/Modul) <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Jurnal Mengajar')">
+          <span class="nav-icon">📓</span> Jurnal Mengajar <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Laporan Pembelajaran')">
+          <span class="nav-icon">📑</span> Laporan Pembelajaran <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+        <a class="nav-item" onclick="App.openInDevelopmentModal('Dokumen Guru')">
+          <span class="nav-icon">📁</span> Dokumen Guru <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-outline w-full text-sm" onclick="App.handleLogout()">
+          <span>🚪</span> Keluar (Logout)
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="flex items-center gap-4">
+          <button class="mobile-menu-toggle" onclick="App.toggleSidebar('guruSidebar')">☰</button>
+          <div>
+            <h2 style="font-size: 1rem; font-weight: 700; color: var(--text-primary);" id="guruProfileName">Nama Guru</h2>
+            <span class="text-xs text-muted">NIP: <span id="guruProfileNip">-</span></span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div style="text-align: right;">
+            <div class="font-semibold text-sm" id="guruCurrentUserName">Guru</div>
+            <span class="badge badge-guru text-xs">GURU</span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="App.handleLogout()">Keluar</button>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <!-- Section: Dashboard Guru -->
+        <section id="guruSection-dashboard">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div>
+                <div class="stat-val" id="guruStatKelas">0</div>
+                <div class="stat-label">Kelas Yang Diampu</div>
+              </div>
+              <div class="stat-icon" style="background-color: #dcfce7; color: #16a34a;">🏛️</div>
+            </div>
+
+            <div class="stat-card">
+              <div>
+                <div class="stat-val" id="guruStatJadwalHariIni">0</div>
+                <div class="stat-label">Jadwal Mengajar (<span id="guruTodayName">Hari Ini</span>)</div>
+              </div>
+              <div class="stat-icon" style="background-color: #e0f2fe; color: #0284c7;">🗓️</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Jadwal Mengajar Hari Ini</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 140px;">Waktu</th>
+                    <th>Mata Pelajaran</th>
+                    <th>Kelas</th>
+                    <th>Ruangan</th>
+                  </tr>
+                </thead>
+                <tbody id="guruTodayScheduleBody">
+                  <tr><td colspan="4" class="text-center text-muted" style="padding: 2rem;">Memuat jadwal...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Daftar Kelas Binaan & Penugasan Mengajar</h3>
+            </div>
+            <div class="card-body">
+              <div id="guruAssignedClassesList">
+                <p class="text-sm text-muted">Memuat data kelas...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Data Kelas & Siswa -->
+        <section id="guruSection-classes" class="hidden">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Data Kelas Yang Anda Ajar</h3>
+                <p class="text-xs text-muted" style="margin-top: 0.25rem;">
+                  Hanya menampilkan kelas yang secara resmi ditugaskan kepada Anda oleh Administrator.
+                </p>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nama Kelas</th>
+                    <th>Tingkat</th>
+                    <th>Kapasitas</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="guruClassesTableBody">
+                  <tr><td colspan="4" class="text-center text-muted" style="padding: 2rem;">Memuat kelas...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

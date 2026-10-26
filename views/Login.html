@@ -1,0 +1,55 @@
+<div id="loginView" class="login-wrapper hidden">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="brand-logo-icon">🏫</div>
+      <h2 style="font-size: 1.375rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em;">
+        ADMINISTRASI GURU SD
+      </h2>
+      <p class="text-sm text-muted" style="margin-top: 0.25rem;">
+        Sistem Administrasi Pembelajaran Sekolah Dasar
+      </p>
+    </div>
+
+    <form id="loginForm" onsubmit="App.handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label" for="loginUsername">Username</label>
+        <input
+          type="text"
+          id="loginUsername"
+          class="form-control"
+          placeholder="Masukkan username Anda"
+          autocomplete="username"
+          required
+        />
+      </div>
+
+      <div class="form-group" style="position: relative;">
+        <label class="form-label" for="loginPassword">Kata Sandi</label>
+        <input
+          type="password"
+          id="loginPassword"
+          class="form-control"
+          placeholder="Masukkan kata sandi"
+          autocomplete="current-password"
+          required
+        />
+      </div>
+
+      <button
+        type="submit"
+        id="loginSubmitBtn"
+        class="btn btn-primary w-full"
+        style="padding: 0.75rem; margin-top: 0.5rem; font-size: 0.9375rem;"
+      >
+        Masuk ke Aplikasi
+      </button>
+    </form>
+
+    <div style="margin-top: 1.5rem; padding: 0.875rem; border-radius: var(--radius-sm); background-color: #f1f5f9; font-size: 0.75rem; color: var(--text-secondary); border: 1px solid var(--border-color);">
+      <strong>ℹ️ Akun Awal Sistem:</strong><br />
+      Username: <code style="color: var(--primary); font-weight: bold;">admin</code><br />
+      Kata Sandi: <code style="color: var(--primary); font-weight: bold;">AdminPassword123!</code><br />
+      <span class="text-muted" style="display:inline-block; margin-top: 4px;">Akun Guru dibuat oleh Admin melalui menu Manajemen Pengguna.</span>
+    </div>
+  </div>
+</div>

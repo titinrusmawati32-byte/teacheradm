@@ -1,0 +1,159 @@
+<div id="guruView" class="app-shell hidden">
+  <!-- Sidebar Guru -->
+  <aside id="guruSidebar" class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-logo-icon" style="width: 36px; height: 36px; font-size: 1rem; margin-bottom: 0;">👨‍🏫</div>
+      <div>
+        <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--primary); line-height: 1.2;">PORTAL GURU</h3>
+        <span class="badge badge-guru" style="font-size: 0.65rem;">GURU SD</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group-title">Menu Guru</div>
+      <a id="guruNav-dashboard" class="nav-item active" onclick="App.switchGuruTab('dashboard')">
+        <span class="nav-icon">📊</span> Dashboard Guru
+      </a>
+      <a id="guruNav-classes" class="nav-item" onclick="App.switchGuruTab('classes')">
+        <span class="nav-icon">🏛️</span> Data Kelas Binaan
+      </a>
+
+      <div class="nav-group-title">Administrasi Pembelajaran</div>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Absensi Siswa')">
+        <span class="nav-icon">📝</span> Absensi Siswa <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Input Nilai')">
+        <span class="nav-icon">🎯</span> Input Nilai <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Jadwal Pembelajaran')">
+        <span class="nav-icon">🗓️</span> Jadwal Pembelajaran <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Perencanaan Pembelajaran')">
+        <span class="nav-icon">📖</span> Perencanaan (RPP/Modul) <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Jurnal Mengajar')">
+        <span class="nav-icon">📓</span> Jurnal Mengajar <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Laporan Pembelajaran')">
+        <span class="nav-icon">📑</span> Laporan Pembelajaran <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Dokumen Guru')">
+        <span class="nav-icon">📁</span> Dokumen Guru <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn btn-outline w-full text-sm" onclick="App.handleLogout()">
+        <span>🚪</span> Keluar (Logout)
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Area -->
+  <div class="main-wrapper">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="flex items-center gap-4">
+        <button class="mobile-menu-toggle" onclick="App.toggleSidebar('guruSidebar')">☰</button>
+        <div>
+          <h2 style="font-size: 1rem; font-weight: 700; color: var(--text-primary);" id="guruProfileName">Nama Guru</h2>
+          <span class="text-xs text-muted">NIP: <span id="guruProfileNip">-</span></span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div style="text-align: right;">
+          <div class="font-semibold text-sm" id="guruCurrentUserName">Guru</div>
+          <span class="badge badge-guru text-xs">GURU</span>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="App.handleLogout()">Keluar</button>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+      <!-- Section: Dashboard Guru -->
+      <section id="guruSection-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div>
+              <div class="stat-val" id="guruStatKelas">0</div>
+              <div class="stat-label">Kelas Yang Diampu</div>
+            </div>
+            <div class="stat-icon" style="background-color: #dcfce7; color: #16a34a;">🏛️</div>
+          </div>
+
+          <div class="stat-card">
+            <div>
+              <div class="stat-val" id="guruStatJadwalHariIni">0</div>
+              <div class="stat-label">Jadwal Mengajar Hari Ini (<span id="guruTodayName">Hari Ini</span>)</div>
+            </div>
+            <div class="stat-icon" style="background-color: #e0f2fe; color: #0284c7;">🗓️</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Jadwal Mengajar Hari Ini</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 140px;">Waktu</th>
+                  <th>Mata Pelajaran</th>
+                  <th>Kelas</th>
+                  <th>Ruangan</th>
+                </tr>
+              </thead>
+              <tbody id="guruTodayScheduleBody">
+                <tr><td colspan="4" class="text-center text-muted" style="padding: 2rem;">Memuat jadwal...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Daftar Kelas Binaan & Penugasan Mengajar</h3>
+          </div>
+          <div class="card-body">
+            <div id="guruAssignedClassesList">
+              <p class="text-sm text-muted">Memuat data kelas...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Data Kelas & Siswa -->
+      <section id="guruSection-classes" class="hidden">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Data Kelas Yang Anda Ajar</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">
+                Hanya menampilkan kelas yang secara resmi ditugaskan kepada Anda oleh Administrator.
+              </p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nama Kelas</th>
+                  <th>Tingkat</th>
+                  <th>Kapasitas</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="guruClassesTableBody">
+                <tr><td colspan="4" class="text-center text-muted" style="padding: 2rem;">Memuat kelas...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,192 @@
+<div id="adminView" class="app-shell hidden">
+  <!-- Sidebar Admin -->
+  <aside id="adminSidebar" class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-logo-icon" style="width: 36px; height: 36px; font-size: 1rem; margin-bottom: 0;">🏫</div>
+      <div>
+        <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--primary); line-height: 1.2;">ADMIN GURU SD</h3>
+        <span class="badge badge-admin" style="font-size: 0.65rem;">PORTAL ADMIN</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group-title">Menu Utama</div>
+      <a id="adminNav-dashboard" class="nav-item active" onclick="App.switchAdminTab('dashboard')">
+        <span class="nav-icon">📊</span> Dashboard Admin
+      </a>
+      <a id="adminNav-users" class="nav-item" onclick="App.switchAdminTab('users')">
+        <span class="nav-icon">👥</span> Manajemen Pengguna
+      </a>
+
+      <div class="nav-group-title">Data Master (Fase 2)</div>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Data Sekolah')">
+        <span class="nav-icon">🏫</span> Data Sekolah <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Manajemen Kelas')">
+        <span class="nav-icon">🏛️</span> Manajemen Kelas <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Manajemen Mata Pelajaran')">
+        <span class="nav-icon">📚</span> Mata Pelajaran <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Kelola Jadwal')">
+        <span class="nav-icon">🗓️</span> Kelola Jadwal <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+
+      <div class="nav-group-title">Monitoring & Pengaturan</div>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Monitoring Absensi')">
+        <span class="nav-icon">📋</span> Monitoring Absensi <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Monitoring Nilai')">
+        <span class="nav-icon">📈</span> Monitoring Nilai <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+      <a class="nav-item" onclick="App.openInDevelopmentModal('Pengaturan Sistem')">
+        <span class="nav-icon">⚙️</span> Pengaturan Sistem <span class="badge badge-dev text-xs" style="margin-left:auto;">Fase 2</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn btn-outline w-full text-sm" onclick="App.handleLogout()">
+        <span>🚪</span> Keluar (Logout)
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Area -->
+  <div class="main-wrapper">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="flex items-center gap-4">
+        <button class="mobile-menu-toggle" onclick="App.toggleSidebar('adminSidebar')">☰</button>
+        <div>
+          <h2 style="font-size: 1rem; font-weight: 700; color: var(--text-primary);" id="adminInfoSekolah">SD NEGERI CONTOH 01</h2>
+          <span class="text-xs text-muted" id="adminInfoTP">Tahun Pelajaran: 2026/2027 Ganjil</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div style="text-align: right;">
+          <div class="font-semibold text-sm" id="adminCurrentUserName">Administrator</div>
+          <span class="badge badge-admin text-xs">ADMIN</span>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="App.handleLogout()">Keluar</button>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+      <!-- Section: Dashboard Overview -->
+      <section id="adminSection-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div>
+              <div class="stat-val" id="adminStatGuru">0</div>
+              <div class="stat-label">Total Guru Terdaftar</div>
+            </div>
+            <div class="stat-icon" style="background-color: #e0f2fe; color: #0284c7;">👨‍🏫</div>
+          </div>
+
+          <div class="stat-card">
+            <div>
+              <div class="stat-val" id="adminStatSiswa">0</div>
+              <div class="stat-label">Total Siswa Aktif</div>
+            </div>
+            <div class="stat-icon" style="background-color: #fef3c7; color: #d97706;">🎒</div>
+          </div>
+
+          <div class="stat-card">
+            <div>
+              <div class="stat-val" id="adminStatKelas">0</div>
+              <div class="stat-label">Rombongan Belajar</div>
+            </div>
+            <div class="stat-icon" style="background-color: #dcfce7; color: #16a34a;">🏛️</div>
+          </div>
+
+          <div class="stat-card">
+            <div>
+              <div class="stat-val" id="adminStatMapel">0</div>
+              <div class="stat-label">Mata Pelajaran</div>
+            </div>
+            <div class="stat-icon" style="background-color: #f3e8ff; color: #9333ea;">📚</div>
+          </div>
+        </div>
+
+        <!-- Panel Aksi Cepat & Log -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Aksi Cepat Administrator</h3>
+          </div>
+          <div class="card-body flex gap-4" style="flex-wrap: wrap;">
+            <button class="btn btn-primary text-sm" onclick="App.switchAdminTab('users'); App.openAddUserModal();">
+              ➕ Tambah Akun Guru/Admin
+            </button>
+            <button class="btn btn-outline text-sm" onclick="App.openInDevelopmentModal('Manajemen Kelas')">
+              🏛️ Buat Kelas Baru (Fase 2)
+            </button>
+            <button class="btn btn-outline text-sm" onclick="App.openInDevelopmentModal('Data Sekolah')">
+              🏫 Profil Sekolah (Fase 2)
+            </button>
+          </div>
+        </div>
+
+        <!-- Log Aktivitas Terbaru -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Log Aktivitas Sistem Terkini</h3>
+            <button class="btn btn-outline btn-sm" onclick="App.loadAdminStats()">Perbarui Log</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 170px;">Waktu</th>
+                  <th>Pengguna</th>
+                  <th>Aksi</th>
+                  <th>Keterangan</th>
+                </tr>
+              </thead>
+              <tbody id="adminRecentLogsBody">
+                <tr><td colspan="4" class="text-center text-muted" style="padding: 2rem;">Memuat log aktivitas...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Manajemen Pengguna -->
+      <section id="adminSection-users" class="hidden">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Manajemen Akun Pengguna</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">
+                Admin berwenang membuat, mengaktifkan, dan menonaktifkan akun Guru atau Admin lain.
+              </p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="App.openAddUserModal()">
+              ➕ Tambah Pengguna Baru
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Nama Lengkap</th>
+                  <th>Email</th>
+                  <th>Peran</th>
+                  <th>Status</th>
+                  <th>Login Terakhir</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <tr><td colspan="7" class="text-center text-muted" style="padding: 2rem;">Memuat data pengguna...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
