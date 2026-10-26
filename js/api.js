@@ -18,6 +18,16 @@ const ApiClient = {
    * @returns {Promise<object>} Response objek { success: boolean, data?: any, message?: string }
    */
   request: async function(action, payload = {}) {
+    // Jika aplikasi dijalankan di dalam Google Apps Script HTML Service
+    if (typeof google !== 'undefined' && google.script && google.script.run) {
+      return new Promise((resolve, reject) => {
+        google.script.run
+          .withSuccessHandler((res) => resolve(res))
+          .withFailureHandler((err) => reject(new Error(err && err.message ? err.message : String(err))))
+          .apiDispatch(action, payload);
+      });
+    }
+
     const apiUrl = APP_CONFIG.getApiUrl();
 
     if (!apiUrl || apiUrl.trim() === '') {

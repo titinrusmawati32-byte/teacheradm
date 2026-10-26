@@ -1,3 +1,375 @@
+<!-- Modals Operasional Admin -->
+
+<!-- Modal: Tambah Kelas / Rombel -->
+<div id="addKelasModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="card-title">Tambah Rombongan Belajar (Kelas)</h3>
+      <button class="btn btn-outline btn-sm" onclick="App.closeAddKelasModal()">✕</button>
+    </div>
+    <form id="addKelasForm" onsubmit="App.submitAddKelas(event)">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="kelasNama">Nama Kelas *</label>
+          <input type="text" id="kelasNama" class="form-control" placeholder="Contoh: Kelas 1A" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="kelasTingkat">Tingkat Kelas *</label>
+          <select id="kelasTingkat" class="form-control" required>
+            <option value="1">Tingkat 1 (Fase A)</option>
+            <option value="2">Tingkat 2 (Fase A)</option>
+            <option value="3">Tingkat 3 (Fase B)</option>
+            <option value="4">Tingkat 4 (Fase B)</option>
+            <option value="5">Tingkat 5 (Fase C)</option>
+            <option value="6">Tingkat 6 (Fase C)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="kelasWali">Wali Kelas</label>
+          <select id="kelasWali" class="form-control">
+            <option value="-">-- Pilih Wali Kelas (Opsional) --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="kelasKapasitas">Kapasitas Maksimal Siswa</label>
+          <input type="number" id="kelasKapasitas" class="form-control" value="28" min="10" max="45" required />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-sm" onclick="App.closeAddKelasModal()">Batal</button>
+        <button type="submit" class="btn btn-primary btn-sm">Simpan Rombel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Tambah Siswa Baru -->
+<div id="addSiswaModal" class="modal-overlay">
+  <div class="modal-dialog" style="max-width: 600px;">
+    <div class="modal-header">
+      <h3 class="card-title">Pendaftaran Siswa Baru</h3>
+      <button class="btn btn-outline btn-sm" onclick="App.closeAddSiswaModal()">✕</button>
+    </div>
+    <form id="addSiswaForm" onsubmit="App.submitAddSiswa(event)">
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label" for="siswaNis">NIS</label>
+            <input type="text" id="siswaNis" class="form-control" placeholder="Nomor Induk Sekolah" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="siswaNisn">NISN</label>
+            <input type="text" id="siswaNisn" class="form-control" placeholder="10 Digit NISN" />
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label class="form-label" for="siswaNama">Nama Lengkap Siswa *</label>
+            <input type="text" id="siswaNama" class="form-control" placeholder="Nama lengkap sesuai akta lahir" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="siswaJk">Jenis Kelamin *</label>
+            <select id="siswaJk" class="form-control" required>
+              <option value="L">Laki-laki (L)</option>
+              <option value="P">Perempuan (P)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="siswaKelas">Alokasi Rombel / Kelas</label>
+            <select id="siswaKelas" class="form-control">
+              <option value="-">-- Pilih Kelas --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="siswaTempatLahir">Tempat Lahir</label>
+            <input type="text" id="siswaTempatLahir" class="form-control" placeholder="Kota / Kabupaten" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="siswaTglLahir">Tanggal Lahir</label>
+            <input type="date" id="siswaTglLahir" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="siswaAgama">Agama</label>
+            <select id="siswaAgama" class="form-control">
+              <option value="Islam">Islam</option>
+              <option value="Kristen">Kristen</option>
+              <option value="Katolik">Katolik</option>
+              <option value="Hindu">Hindu</option>
+              <option value="Buddha">Buddha</option>
+              <option value="Konghucu">Konghucu</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="siswaHpOrtu">No. HP / WhatsApp Orang Tua</label>
+            <input type="text" id="siswaHpOrtu" class="form-control" placeholder="08xxxxxxxxxx" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="siswaNamaAyah">Nama Ayah</label>
+            <input type="text" id="siswaNamaAyah" class="form-control" placeholder="Nama ayah kandung" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="siswaNamaIbu">Nama Ibu</label>
+            <input type="text" id="siswaNamaIbu" class="form-control" placeholder="Nama ibu kandung" />
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label class="form-label" for="siswaAlamat">Alamat Tempat Tinggal</label>
+            <input type="text" id="siswaAlamat" class="form-control" placeholder="Jalan, RT/RW, Dusun/Kelurahan" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-sm" onclick="App.closeAddSiswaModal()">Batal</button>
+        <button type="submit" class="btn btn-primary btn-sm">Daftarkan Siswa</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Edit Profil Guru -->
+<div id="editGuruModal" class="modal-overlay">
+  <div class="modal-dialog" style="max-width: 600px;">
+    <div class="modal-header">
+      <h3 class="card-title">Perbarui Data Tenaga Pendidik (Guru)</h3>
+      <button class="btn btn-outline btn-sm" onclick="App.closeEditGuruModal()">✕</button>
+    </div>
+    <form id="editGuruForm" onsubmit="App.submitEditGuru(event)">
+      <input type="hidden" id="editGuruId" />
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem;">
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label class="form-label" for="editGuruNama">Nama Lengkap *</label>
+            <input type="text" id="editGuruNama" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editGuruGelarDepan">Gelar Depan</label>
+            <input type="text" id="editGuruGelarDepan" class="form-control" placeholder="Dr. / Drs." />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editGuruGelarBelakang">Gelar Belakang</label>
+            <input type="text" id="editGuruGelarBelakang" class="form-control" placeholder="S.Pd. / M.Pd." />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editGuruNip">NIP</label>
+            <input type="text" id="editGuruNip" class="form-control" placeholder="18 Digit NIP" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editGuruNuptk">NUPTK</label>
+            <input type="text" id="editGuruNuptk" class="form-control" placeholder="16 Digit NUPTK" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editGuruJk">Jenis Kelamin</label>
+            <select id="editGuruJk" class="form-control">
+              <option value="L">Laki-laki (L)</option>
+              <option value="P">Perempuan (P)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editGuruHp">No. WhatsApp / HP</label>
+            <input type="text" id="editGuruHp" class="form-control" placeholder="08xxxxxxxxxx" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editGuruStatusPegawai">Status Kepegawaian</label>
+            <select id="editGuruStatusPegawai" class="form-control">
+              <option value="PNS">PNS</option>
+              <option value="PPPK">PPPK</option>
+              <option value="GTT/Honorer">GTT / Honorer</option>
+              <option value="GTY">GTY</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editGuruJabatan">Jabatan / Tugas</label>
+            <input type="text" id="editGuruJabatan" class="form-control" placeholder="Contoh: Guru Kelas 1A" />
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label class="form-label" for="editGuruEmail">Email</label>
+            <input type="email" id="editGuruEmail" class="form-control" placeholder="nama@sekolah.sch.id" />
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label class="form-label" for="editGuruAlamat">Alamat Tinggal</label>
+            <input type="text" id="editGuruAlamat" class="form-control" placeholder="Alamat domisili guru" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-sm" onclick="App.closeEditGuruModal()">Batal</button>
+        <button type="submit" class="btn btn-primary btn-sm">Simpan Perubahan Guru</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Tambah Mata Pelajaran -->
+<div id="addMapelModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="card-title">Tambah Mata Pelajaran</h3>
+      <button class="btn btn-outline btn-sm" onclick="App.closeAddMapelModal()">✕</button>
+    </div>
+    <form id="addMapelForm" onsubmit="App.submitAddMapel(event)">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="mapelKode">Kode Singkat *</label>
+          <input type="text" id="mapelKode" class="form-control" placeholder="Contoh: BIND, MTK, IPAS" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mapelNama">Nama Mata Pelajaran *</label>
+          <input type="text" id="mapelNama" class="form-control" placeholder="Contoh: Bahasa Indonesia" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mapelKelompok">Kelompok Mata Pelajaran</label>
+          <select id="mapelKelompok" class="form-control">
+            <option value="Wajib">Wajib (Umum)</option>
+            <option value="Muatan Lokal">Muatan Lokal</option>
+            <option value="Pilihan">Pilihan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mapelTingkat">Fase / Sasaran Tingkat</label>
+          <input type="text" id="mapelTingkat" class="form-control" value="Fase A, B, C (Kelas 1 - 6)" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mapelKkm">KKM / Kriteria Ketuntasan (KKTP)</label>
+          <input type="number" id="mapelKkm" class="form-control" value="75" min="50" max="100" required />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-sm" onclick="App.closeAddMapelModal()">Batal</button>
+        <button type="submit" class="btn btn-primary btn-sm">Simpan Mapel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Tambah Jadwal Pelajaran -->
+<div id="addJadwalModal" class="modal-overlay">
+  <div class="modal-dialog" style="max-width: 560px;">
+    <div class="modal-header">
+      <h3 class="card-title">Tambah Jadwal Pembelajaran</h3>
+      <button class="btn btn-outline btn-sm" onclick="App.closeAddJadwalModal()">✕</button>
+    </div>
+    <form id="addJadwalForm" onsubmit="App.submitAddJadwal(event)">
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label" for="jadwalHari">Hari *</label>
+            <select id="jadwalHari" class="form-control" required>
+              <option value="Senin">Senin</option>
+              <option value="Selasa">Selasa</option>
+              <option value="Rabu">Rabu</option>
+              <option value="Kamis">Kamis</option>
+              <option value="Jumat">Jumat</option>
+              <option value="Sabtu">Sabtu</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="jadwalKelas">Kelas / Rombel *</label>
+            <select id="jadwalKelas" class="form-control" required>
+              <option value="">-- Pilih Rombel --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="jadwalMapel">Mata Pelajaran *</label>
+            <select id="jadwalMapel" class="form-control" required>
+              <option value="">-- Pilih Mata Pelajaran --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="jadwalGuru">Guru Pengampu *</label>
+            <select id="jadwalGuru" class="form-control" required>
+              <option value="">-- Pilih Guru --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="jadwalJamMulai">Jam Ke-Mulai</label>
+            <input type="number" id="jadwalJamMulai" class="form-control" value="1" min="1" max="10" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="jadwalJamSelesai">Jam Ke-Selesai</label>
+            <input type="number" id="jadwalJamSelesai" class="form-control" value="2" min="1" max="10" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="jadwalWaktuMulai">Waktu Mulai</label>
+            <input type="text" id="jadwalWaktuMulai" class="form-control" value="07.30" placeholder="07.30" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="jadwalWaktuSelesai">Waktu Selesai</label>
+            <input type="text" id="jadwalWaktuSelesai" class="form-control" value="08.40" placeholder="08.40" />
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label class="form-label" for="jadwalRuang">Ruangan / Tempat</label>
+            <input type="text" id="jadwalRuang" class="form-control" value="Ruang Kelas" placeholder="Ruang Kelas, Lapangan, Lab" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-sm" onclick="App.closeAddJadwalModal()">Batal</button>
+        <button type="submit" class="btn btn-primary btn-sm">Simpan Jadwal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Catat Presensi Cepat -->
+<div id="quickAbsensiModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="card-title">Catat Sesi Presensi Harian</h3>
+      <button class="btn btn-outline btn-sm" onclick="App.closeQuickAbsensiModal()">✕</button>
+    </div>
+    <form id="quickAbsensiForm" onsubmit="App.submitQuickAbsensi(event)">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="absensiKelasSelect">Kelas / Rombel *</label>
+          <select id="absensiKelasSelect" class="form-control" required>
+            <option value="">-- Pilih Kelas --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="absensiCatatan">Catatan / Keterangan Pembelajaran</label>
+          <input type="text" id="absensiCatatan" class="form-control" value="Presensi kehadiran rutin hari ini" required />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-sm" onclick="App.closeQuickAbsensiModal()">Batal</button>
+        <button type="submit" class="btn btn-primary btn-sm">Simpan Presensi</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Input Nilai Pembelajaran Siswa -->
+<div id="inputNilaiModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="card-title">Input Nilai Pembelajaran Siswa</h3>
+      <button class="btn btn-outline btn-sm" onclick="App.closeInputNilaiModal()">✕</button>
+    </div>
+    <form id="inputNilaiForm" onsubmit="App.submitInputNilai(event)">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="nilaiSiswaSelect">Pilih Siswa *</label>
+          <select id="nilaiSiswaSelect" class="form-control" required>
+            <option value="">-- Pilih Siswa --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="nilaiSkor">Skor Nilai (0 - 100) *</label>
+          <input type="number" id="nilaiSkor" class="form-control" min="0" max="100" value="85" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="nilaiCatatan">Catatan Kemajuan / Keterangan</label>
+          <input type="text" id="nilaiCatatan" class="form-control" value="Tercapai dengan sangat baik" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-sm" onclick="App.closeInputNilaiModal()">Batal</button>
+        <button type="submit" class="btn btn-primary btn-sm">Simpan Nilai</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ======================================================== -->
+<!-- APLIKASI UTAMA: VIEW PORTAL ADMIN                        -->
+<!-- ======================================================== -->
 <div id="adminView" class="app-shell hidden">
   <!-- Mobile Sidebar Overlay Backdrop -->
   <div id="adminSidebarOverlay" class="sidebar-overlay" onclick="App.closeSidebar('adminSidebar')"></div>
@@ -23,7 +395,7 @@
       </button>
     </div>
 
-    <!-- Navigasi Menu Sidebar -->
+    <!-- Navigasi Menu Sidebar (11 Menu Lengkap & Un-truncated) -->
     <nav class="sidebar-nav">
       <!-- KELOMPOK 1: DASHBOARD -->
       <div class="nav-group-title">DASHBOARD</div>
@@ -50,7 +422,6 @@
           <path d="M10 21v-4a2 2 0 0 1 4 0v4"></path>
         </svg>
         <span class="nav-text">Data Sekolah</span>
-        <span class="badge-phase">Fase 2</span>
       </a>
 
       <a id="adminNav-kelas" class="nav-item" onclick="App.switchAdminTab('kelas')" tabindex="0" role="button">
@@ -61,7 +432,6 @@
           <rect x="3" y="14" width="7" height="7" rx="1"></rect>
         </svg>
         <span class="nav-text">Manajemen Kelas</span>
-        <span class="badge-phase">Fase 2</span>
       </a>
 
       <a id="adminNav-siswa" class="nav-item" onclick="App.switchAdminTab('siswa')" tabindex="0" role="button">
@@ -72,7 +442,6 @@
           <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
         </svg>
         <span class="nav-text">Data Siswa</span>
-        <span class="badge-phase">Fase 2</span>
       </a>
 
       <a id="adminNav-guru" class="nav-item" onclick="App.switchAdminTab('guru')" tabindex="0" role="button">
@@ -82,7 +451,6 @@
           <line x1="8" y1="11" x2="16" y2="11"></line>
         </svg>
         <span class="nav-text">Data Guru</span>
-        <span class="badge-phase">Fase 2</span>
       </a>
 
       <a id="adminNav-mapel" class="nav-item" onclick="App.switchAdminTab('mapel')" tabindex="0" role="button">
@@ -91,7 +459,6 @@
           <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
         </svg>
         <span class="nav-text">Mata Pelajaran</span>
-        <span class="badge-phase">Fase 2</span>
       </a>
 
       <a id="adminNav-jadwal" class="nav-item" onclick="App.switchAdminTab('jadwal')" tabindex="0" role="button">
@@ -102,7 +469,6 @@
           <line x1="3" y1="10" x2="21" y2="10"></line>
         </svg>
         <span class="nav-text">Kelola Jadwal</span>
-        <span class="badge-phase">Fase 2</span>
       </a>
 
       <!-- KELOMPOK 3: MONITORING & PENGATURAN -->
@@ -122,7 +488,6 @@
           <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
         </svg>
         <span class="nav-text">Monitoring Absensi</span>
-        <span class="badge-phase">Fase 2</span>
       </a>
 
       <a id="adminNav-nilai" class="nav-item" onclick="App.switchAdminTab('nilai')" tabindex="0" role="button">
@@ -132,7 +497,6 @@
           <line x1="6" y1="20" x2="6" y2="14"></line>
         </svg>
         <span class="nav-text">Monitoring Nilai</span>
-        <span class="badge-phase">Fase 2</span>
       </a>
 
       <a id="adminNav-pengaturan" class="nav-item" onclick="App.switchAdminTab('pengaturan')" tabindex="0" role="button">
@@ -141,7 +505,6 @@
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
         </svg>
         <span class="nav-text">Pengaturan Sistem</span>
-        <span class="badge-phase">Fase 2</span>
       </a>
     </nav>
 
@@ -189,7 +552,7 @@
     <main class="page-content">
 
       <!-- ======================================================== -->
-      <!-- SECTION 1: DASHBOARD ADMIN -->
+      <!-- SECTION 1: DASHBOARD ADMIN                               -->
       <!-- ======================================================== -->
       <section id="adminSection-dashboard">
         <!-- Statistik Ringkas -->
@@ -276,461 +639,279 @@
       </section>
 
       <!-- ======================================================== -->
-      <!-- SECTION 2: DATA SEKOLAH (FASE 2) -->
+      <!-- SECTION 2: DATA SEKOLAH (CRUD LENGKAP)                   -->
       <!-- ======================================================== -->
       <section id="adminSection-sekolah" class="hidden">
-        <div class="phase-preview-card">
-          <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <div class="card">
+          <div class="card-header flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem;">
             <div>
-              <div class="flex items-center gap-3">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">Data Identitas Sekolah</h3>
-                <span class="phase-header-badge">Fase 2 - Dalam Pengembangan</span>
-              </div>
-              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Kelola profil kelembagaan, NPSN, akreditasi, dan kepala sekolah.</p>
+              <h3 class="card-title">Profil & Identitas Satuan Pendidikan</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Data profil ini tersimpan di tabel SEKOLAH Google Sheets dan digunakan di kop surat serta rapor siswa.</p>
             </div>
-            <span class="badge badge-dev">Tabel: SEKOLAH</span>
+            <button type="button" class="btn btn-outline btn-sm" onclick="App.loadSekolahForm()">Muat Ulang</button>
           </div>
-
-          <div style="background-color: var(--warning-light); border: 1px dashed var(--warning); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.8125rem; color: #92400e;">
-            <strong>Status Pengembangan:</strong> Modul ini disiapkan untuk integrasi identitas resmi sekolah. Struktur tabel <code>SEKOLAH</code> telah siap dan tersimpan di Google Spreadsheet. Pengaturan profil akan otomatis tercermin di header dan laporan rapor.
-          </div>
-
-          <!-- Preview Formulir Profil Sekolah -->
-          <div class="card" style="margin-bottom: 1.5rem;">
-            <div class="card-header">
-              <h4 class="card-title text-sm">Pratinjau Formulir Identitas Sekolah</h4>
-            </div>
-            <div class="card-body">
+          <div class="card-body">
+            <form id="sekolahForm" onsubmit="App.saveSekolahForm(event)">
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
                 <div class="form-group">
-                  <label class="form-label">NPSN</label>
-                  <input type="text" class="form-control" value="20104050" disabled>
+                  <label class="form-label" for="sekNpsn">NPSN (Nomor Pokok Sekolah Nasional) *</label>
+                  <input type="text" id="sekNpsn" class="form-control" required />
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Nama Resmi Sekolah</label>
-                  <input type="text" class="form-control" value="SD NEGERI CONTOH 01" disabled>
+                  <label class="form-label" for="sekNama">Nama Resmi Sekolah *</label>
+                  <input type="text" id="sekNama" class="form-control" required />
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Bentuk Pendidikan</label>
-                  <input type="text" class="form-control" value="Sekolah Dasar (SD)" disabled>
+                  <label class="form-label" for="sekKepsek">Nama Kepala Sekolah *</label>
+                  <input type="text" id="sekKepsek" class="form-control" required />
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Status Sekolah</label>
-                  <input type="text" class="form-control" value="NEGERI" disabled>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Nama Kepala Sekolah</label>
-                  <input type="text" class="form-control" value="Budi Santoso, M.Pd." disabled>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">NIP Kepala Sekolah</label>
-                  <input type="text" class="form-control" value="19750512 200003 1 004" disabled>
+                  <label class="form-label" for="sekNipKepsek">NIP Kepala Sekolah</label>
+                  <input type="text" id="sekNipKepsek" class="form-control" />
                 </div>
                 <div class="form-group" style="grid-column: 1 / -1;">
-                  <label class="form-label">Alamat Lengkap</label>
-                  <input type="text" class="form-control" value="Jl. Pendidikan No. 45, Kelurahan Sumberjaya, Kecamatan Cibitung" disabled>
+                  <label class="form-label" for="sekAlamat">Alamat Lengkap *</label>
+                  <input type="text" id="sekAlamat" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="sekDesa">Desa / Kelurahan</label>
+                  <input type="text" id="sekDesa" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="sekKecamatan">Kecamatan</label>
+                  <input type="text" id="sekKecamatan" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="sekKabupaten">Kabupaten / Kota</label>
+                  <input type="text" id="sekKabupaten" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="sekProvinsi">Provinsi</label>
+                  <input type="text" id="sekProvinsi" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="sekKodePos">Kode Pos</label>
+                  <input type="text" id="sekKodePos" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="sekTelepon">Nomor Telepon Kantor</label>
+                  <input type="text" id="sekTelepon" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="sekEmail">Alamat Email Resmi</label>
+                  <input type="email" id="sekEmail" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="sekWebsite">Website Resmi Sekolah</label>
+                  <input type="text" id="sekWebsite" class="form-control" />
                 </div>
               </div>
-            </div>
-          </div>
-
-          <!-- Skema Database Google Sheets -->
-          <div class="card">
-            <div class="card-header">
-              <h4 class="card-title text-sm">Skema Kolom Tabel Google Sheets (SEKOLAH)</h4>
-            </div>
-            <div class="card-body">
-              <div class="flex" style="flex-wrap: wrap;">
-                <span class="schema-tag">id_sekolah</span>
-                <span class="schema-tag">npsn</span>
-                <span class="schema-tag">nama_sekolah</span>
-                <span class="schema-tag">bentuk_pendidikan</span>
-                <span class="schema-tag">status_sekolah</span>
-                <span class="schema-tag">alamat</span>
-                <span class="schema-tag">desa_kelurahan</span>
-                <span class="schema-tag">kecamatan</span>
-                <span class="schema-tag">kab_kota</span>
-                <span class="schema-tag">provinsi</span>
-                <span class="schema-tag">kode_pos</span>
-                <span class="schema-tag">nomor_telepon</span>
-                <span class="schema-tag">email_sekolah</span>
-                <span class="schema-tag">nama_kepala_sekolah</span>
-                <span class="schema-tag">nip_kepala_sekolah</span>
-                <span class="schema-tag">akreditasi</span>
+              <div style="margin-top: 1.5rem; text-align: right;">
+                <button type="submit" class="btn btn-primary" style="padding: 0.65rem 1.75rem;">
+                  💾 Simpan Perubahan Profil Sekolah
+                </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </section>
 
       <!-- ======================================================== -->
-      <!-- SECTION 3: MANAJEMEN KELAS (FASE 2) -->
+      <!-- SECTION 3: MANAJEMEN KELAS (CRUD LENGKAP)                -->
       <!-- ======================================================== -->
       <section id="adminSection-kelas" class="hidden">
-        <div class="phase-preview-card">
-          <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <div class="card">
+          <div class="card-header flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem;">
             <div>
-              <div class="flex items-center gap-3">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">Manajemen Kelas & Rombel</h3>
-                <span class="phase-header-badge">Fase 2 - Dalam Pengembangan</span>
-              </div>
-              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Pengaturan rombongan belajar tingkat 1 s/d 6, alokasi wali kelas, dan kapasitas ruang.</p>
+              <h3 class="card-title">Daftar Rombongan Belajar (Kelas)</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Pengaturan rombel tingkat 1 - 6, wali kelas, dan kuota siswa aktif.</p>
             </div>
-            <span class="badge badge-dev">Tabel: KELAS & ANGGOTA_KELAS</span>
+            <div class="flex items-center gap-2">
+              <button class="btn btn-outline btn-sm" onclick="App.loadKelasTable()">Perbarui</button>
+              <button class="btn btn-primary btn-sm" onclick="App.openAddKelasModal()">➕ Tambah Rombel</button>
+            </div>
           </div>
-
-          <div style="background-color: var(--warning-light); border: 1px dashed var(--warning); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.8125rem; color: #92400e;">
-            <strong>Status Pengembangan:</strong> Modul ini memungkinkan pembuatan rombongan belajar, penugasan guru sebagai wali kelas, serta pembagian siswa ke setiap rombel.
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h4 class="card-title text-sm">Pratinjau Data Rombongan Belajar (Rombel)</h4>
-            </div>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Kode Rombel</th>
-                    <th>Nama Kelas</th>
-                    <th>Tingkat</th>
-                    <th>Wali Kelas</th>
-                    <th>Ruang</th>
-                    <th>Kapasitas</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>KLS-01A</code></td>
-                    <td><strong>Kelas 1A</strong></td>
-                    <td>Tingkat 1</td>
-                    <td>Siti Aminah, S.Pd.SD</td>
-                    <td>Ruang 01</td>
-                    <td>28 Siswa</td>
-                    <td><span class="badge badge-active">AKTIF</span></td>
-                  </tr>
-                  <tr>
-                    <td><code>KLS-01B</code></td>
-                    <td><strong>Kelas 1B</strong></td>
-                    <td>Tingkat 1</td>
-                    <td>Rahmawati, S.Pd.</td>
-                    <td>Ruang 02</td>
-                    <td>28 Siswa</td>
-                    <td><span class="badge badge-active">AKTIF</span></td>
-                  </tr>
-                  <tr>
-                    <td><code>KLS-02A</code></td>
-                    <td><strong>Kelas 2A</strong></td>
-                    <td>Tingkat 2</td>
-                    <td>Ahmad Fauzi, S.Pd.</td>
-                    <td>Ruang 03</td>
-                    <td>30 Siswa</td>
-                    <td><span class="badge badge-active">AKTIF</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Kode Kelas</th>
+                  <th>Nama Rombel</th>
+                  <th>Tingkat</th>
+                  <th>Wali Kelas</th>
+                  <th>Kapasitas Ruang</th>
+                  <th>Jumlah Siswa</th>
+                  <th>Status</th>
+                  <th style="width: 100px;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="kelasListTableBody">
+                <tr><td colspan="8" class="text-center text-muted" style="padding: 2rem;">Memuat data kelas...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
       <!-- ======================================================== -->
-      <!-- SECTION 4: DATA SISWA (FASE 2) -->
+      <!-- SECTION 4: DATA SISWA (CRUD LENGKAP)                     -->
       <!-- ======================================================== -->
       <section id="adminSection-siswa" class="hidden">
-        <div class="phase-preview-card">
-          <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <div class="card">
+          <div class="card-header flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem;">
             <div>
-              <div class="flex items-center gap-3">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">Direktori Data Siswa</h3>
-                <span class="phase-header-badge">Fase 2 - Dalam Pengembangan</span>
-              </div>
-              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Pengelolaan database peserta didik, NIS, NISN, riwayat kelas, dan data orang tua/wali.</p>
+              <h3 class="card-title">Direktori Database Peserta Didik</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Data induk siswa SD lengkap dengan informasi orang tua/wali murid.</p>
             </div>
-            <span class="badge badge-dev">Tabel: SISWA</span>
+            <div class="flex items-center gap-2">
+              <button class="btn btn-outline btn-sm" onclick="App.loadSiswaTable()">Perbarui</button>
+              <button class="btn btn-primary btn-sm" onclick="App.openAddSiswaModal()">➕ Tambah Siswa Baru</button>
+            </div>
           </div>
-
-          <div style="background-color: var(--warning-light); border: 1px dashed var(--warning); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.8125rem; color: #92400e;">
-            <strong>Status Pengembangan:</strong> Tabel database <code>SISWA</code> sudah siap dengan 17 field lengkap termasuk data orang tua, nomor kontak darurat, dan status keaktifan.
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h4 class="card-title text-sm">Pratinjau Format Direktori Siswa</h4>
-            </div>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>NIS / NISN</th>
-                    <th>Nama Lengkap Siswa</th>
-                    <th>L/P</th>
-                    <th>Kelas Saat Ini</th>
-                    <th>Nama Wali</th>
-                    <th>Kontak Wali</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>2024001 / 0123456781</code></td>
-                    <td><strong>Aditia Pratama</strong></td>
-                    <td>L</td>
-                    <td><span class="badge badge-guru">Kelas 1A</span></td>
-                    <td>Bambang Hermawan</td>
-                    <td>081234567890</td>
-                    <td><span class="badge badge-active">AKTIF</span></td>
-                  </tr>
-                  <tr>
-                    <td><code>2024002 / 0123456782</code></td>
-                    <td><strong>Aisyah Nur Salsabila</strong></td>
-                    <td>P</td>
-                    <td><span class="badge badge-guru">Kelas 1A</span></td>
-                    <td>Rudi Hartono</td>
-                    <td>081398765432</td>
-                    <td><span class="badge badge-active">AKTIF</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>NIS / NISN</th>
+                  <th>Nama Lengkap Siswa</th>
+                  <th>L/P</th>
+                  <th>Rombel / Kelas</th>
+                  <th>Wali Murid</th>
+                  <th>No. HP Wali</th>
+                  <th>Status</th>
+                  <th style="width: 100px;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="siswaListTableBody">
+                <tr><td colspan="8" class="text-center text-muted" style="padding: 2rem;">Memuat data siswa...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
       <!-- ======================================================== -->
-      <!-- SECTION 5: DATA GURU (FASE 2) -->
+      <!-- SECTION 5: DATA GURU (CRUD LENGKAP)                      -->
       <!-- ======================================================== -->
       <section id="adminSection-guru" class="hidden">
-        <div class="phase-preview-card">
-          <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <div class="card">
+          <div class="card-header flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem;">
             <div>
-              <div class="flex items-center gap-3">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">Direktori Guru & Tenaga Kependidikan</h3>
-                <span class="phase-header-badge">Fase 2 - Dalam Pengembangan</span>
-              </div>
-              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Data profil pendidik, NIP, NUPTK, status kepegawaian, dan penugasan kelas.</p>
+              <h3 class="card-title">Direktori Tenaga Pendidik & Guru</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Data guru terhubung langsung dengan profil akun login di tabel GURU & USERS.</p>
             </div>
-            <span class="badge badge-dev">Tabel: GURU & PENUGASAN_GURU</span>
+            <button class="btn btn-outline btn-sm" onclick="App.loadGuruTable()">Perbarui Data</button>
           </div>
-
-          <div style="background-color: var(--warning-light); border: 1px dashed var(--warning); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.8125rem; color: #92400e;">
-            <strong>Status Pengembangan:</strong> Akun guru yang dibuat di Manajemen Pengguna akan secara otomatis terhubung dengan direktori guru ini untuk penugasan mengajar dan rekap absensi.
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h4 class="card-title text-sm">Pratinjau Direktori Pendidik</h4>
-            </div>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>NIP / NUPTK</th>
-                    <th>Nama Pendidik</th>
-                    <th>Jenis PTK</th>
-                    <th>Status Pegawai</th>
-                    <th>Penugasan Mengajar</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>19850215 201001 2 018</code></td>
-                    <td><strong>Siti Aminah, S.Pd.SD</strong></td>
-                    <td>Guru Kelas</td>
-                    <td>PNS</td>
-                    <td>Wali Kelas 1A</td>
-                    <td><span class="badge badge-active">AKTIF</span></td>
-                  </tr>
-                  <tr>
-                    <td><code>19900820 201903 1 005</code></td>
-                    <td><strong>Ahmad Fauzi, S.Pd.</strong></td>
-                    <td>Guru Mata Pelajaran</td>
-                    <td>PPPK</td>
-                    <td>PJOK Kelas 1 - 6</td>
-                    <td><span class="badge badge-active">AKTIF</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>NIP / NUPTK</th>
+                  <th>Nama Lengkap & Gelar</th>
+                  <th>L/P</th>
+                  <th>Jabatan / Tugas</th>
+                  <th>Kepegawaian</th>
+                  <th>WhatsApp / HP</th>
+                  <th>Status Akun</th>
+                  <th style="width: 100px;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="guruListTableBody">
+                <tr><td colspan="8" class="text-center text-muted" style="padding: 2rem;">Memuat data guru...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
       <!-- ======================================================== -->
-      <!-- SECTION 6: MATA PELAJARAN (FASE 2) -->
+      <!-- SECTION 6: MATA PELAJARAN (CRUD LENGKAP)                 -->
       <!-- ======================================================== -->
       <section id="adminSection-mapel" class="hidden">
-        <div class="phase-preview-card">
-          <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <div class="card">
+          <div class="card-header flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem;">
             <div>
-              <div class="flex items-center gap-3">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">Mata Pelajaran & Kurikulum</h3>
-                <span class="phase-header-badge">Fase 2 - Dalam Pengembangan</span>
-              </div>
-              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Struktur kurikulum Sekolah Dasar, alokasi JP mingguan, dan KKM/KKTP per fase.</p>
+              <h3 class="card-title">Kurikulum & Mata Pelajaran</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Daftar mata pelajaran Kurikulum Merdeka beserta KKM/KKTP satuan pendidikan.</p>
             </div>
-            <span class="badge badge-dev">Tabel: MATA_PELAJARAN</span>
+            <div class="flex items-center gap-2">
+              <button class="btn btn-outline btn-sm" onclick="App.loadMapelTable()">Perbarui</button>
+              <button class="btn btn-primary btn-sm" onclick="App.openAddMapelModal()">➕ Tambah Mapel</button>
+            </div>
           </div>
-
-          <div style="background-color: var(--warning-light); border: 1px dashed var(--warning); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.8125rem; color: #92400e;">
-            <strong>Status Pengembangan:</strong> Mendukung Kurikulum Merdeka (Fase A, B, C) serta Kurikulum 2013, dengan pembagian mata pelajaran wajib dan muatan lokal.
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h4 class="card-title text-sm">Pratinjau Daftar Mata Pelajaran SD</h4>
-            </div>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Kode</th>
-                    <th>Nama Mata Pelajaran</th>
-                    <th>Kelompok</th>
-                    <th>Alokasi JP/Minggu</th>
-                    <th>KKTP / KKM</th>
-                    <th>Fase Tingkat</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>PAIBP</code></td>
-                    <td><strong>Pendidikan Agama dan Budi Pekerti</strong></td>
-                    <td>Wajib</td>
-                    <td>3 JP</td>
-                    <td>75</td>
-                    <td>Fase A, B, C</td>
-                  </tr>
-                  <tr>
-                    <td><code>PANCASILA</code></td>
-                    <td><strong>Pendidikan Pancasila</strong></td>
-                    <td>Wajib</td>
-                    <td>4 JP</td>
-                    <td>75</td>
-                    <td>Fase A, B, C</td>
-                  </tr>
-                  <tr>
-                    <td><code>BIND</code></td>
-                    <td><strong>Bahasa Indonesia</strong></td>
-                    <td>Wajib</td>
-                    <td>6 JP</td>
-                    <td>72</td>
-                    <td>Fase A, B, C</td>
-                  </tr>
-                  <tr>
-                    <td><code>MTK</code></td>
-                    <td><strong>Matematika</strong></td>
-                    <td>Wajib</td>
-                    <td>5 JP</td>
-                    <td>70</td>
-                    <td>Fase A, B, C</td>
-                  </tr>
-                  <tr>
-                    <td><code>IPAS</code></td>
-                    <td><strong>Ilmu Pengetahuan Alam dan Sosial</strong></td>
-                    <td>Wajib</td>
-                    <td>5 JP</td>
-                    <td>75</td>
-                    <td>Fase B, C</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Kode</th>
+                  <th>Nama Mata Pelajaran</th>
+                  <th>Kelompok</th>
+                  <th>Fase / Tingkat</th>
+                  <th>KKM / KKTP</th>
+                  <th>Status</th>
+                  <th style="width: 100px;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="mapelListTableBody">
+                <tr><td colspan="7" class="text-center text-muted" style="padding: 2rem;">Memuat mata pelajaran...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
       <!-- ======================================================== -->
-      <!-- SECTION 7: KELOLA JADWAL (FASE 2) -->
+      <!-- SECTION 7: KELOLA JADWAL (CRUD LENGKAP)                  -->
       <!-- ======================================================== -->
       <section id="adminSection-jadwal" class="hidden">
-        <div class="phase-preview-card">
-          <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <div class="card">
+          <div class="card-header flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem;">
             <div>
-              <div class="flex items-center gap-3">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">Kelola Jadwal Pembelajaran</h3>
-                <span class="phase-header-badge">Fase 2 - Dalam Pengembangan</span>
-              </div>
-              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Penyusunan jadwal pelajaran mingguan per kelas dan jam mengajar pendidik.</p>
+              <h3 class="card-title">Jadwal Pembelajaran Mingguan</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Pengaturan alokasi waktu mata pelajaran, guru pengampu, dan ruang kelas.</p>
             </div>
-            <span class="badge badge-dev">Tabel: JADWAL</span>
+            <div class="flex items-center gap-2">
+              <button class="btn btn-outline btn-sm" onclick="App.loadJadwalTable()">Perbarui</button>
+              <button class="btn btn-primary btn-sm" onclick="App.openAddJadwalModal()">➕ Tambah Jadwal</button>
+            </div>
           </div>
-
-          <div style="background-color: var(--warning-light); border: 1px dashed var(--warning); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.8125rem; color: #92400e;">
-            <strong>Status Pengembangan:</strong> Modul jadwal akan otomatis tersambung ke dashboard masing-masing Guru sehingga setiap guru dapat melihat jadwal hariannya saat login.
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h4 class="card-title text-sm">Pratinjau Matriks Jadwal Mingguan</h4>
-            </div>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Hari</th>
-                    <th>Jam Ke</th>
-                    <th>Waktu</th>
-                    <th>Kelas</th>
-                    <th>Mata Pelajaran</th>
-                    <th>Guru Pengampu</th>
-                    <th>Ruang</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Senin</strong></td>
-                    <td>1 - 2</td>
-                    <td>07.30 - 08.40</td>
-                    <td><span class="badge badge-guru">Kelas 1A</span></td>
-                    <td>Pendidikan Pancasila</td>
-                    <td>Siti Aminah, S.Pd.SD</td>
-                    <td>Ruang 01</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Senin</strong></td>
-                    <td>3 - 4</td>
-                    <td>09.00 - 10.10</td>
-                    <td><span class="badge badge-guru">Kelas 1A</span></td>
-                    <td>Bahasa Indonesia</td>
-                    <td>Siti Aminah, S.Pd.SD</td>
-                    <td>Ruang 01</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Selasa</strong></td>
-                    <td>1 - 2</td>
-                    <td>07.30 - 08.40</td>
-                    <td><span class="badge badge-guru">Kelas 1A</span></td>
-                    <td>PJOK</td>
-                    <td>Ahmad Fauzi, S.Pd.</td>
-                    <td>Lapangan</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Hari</th>
+                  <th>Jam Ke</th>
+                  <th>Waktu</th>
+                  <th>Kelas</th>
+                  <th>Mata Pelajaran</th>
+                  <th>Guru Pengampu</th>
+                  <th>Ruangan</th>
+                  <th style="width: 100px;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="jadwalListTableBody">
+                <tr><td colspan="8" class="text-center text-muted" style="padding: 2rem;">Memuat jadwal...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
       <!-- ======================================================== -->
-      <!-- SECTION 8: MANAJEMEN PENGGUNA (AKTIF / SELESAI) -->
+      <!-- SECTION 8: MANAJEMEN PENGGUNA                            -->
       <!-- ======================================================== -->
       <section id="adminSection-users" class="hidden">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem;">
             <div>
-              <h3 class="card-title">Manajemen Akun Pengguna</h3>
-              <p class="text-xs text-muted" style="margin-top: 0.25rem;">
-                Admin berwenang membuat, mengaktifkan, dan menonaktifkan akun Guru atau Admin lain. Data tersimpan di tabel <code>USERS</code> Google Sheets.
-              </p>
+              <h3 class="card-title">Daftar Pengguna Aplikasi</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Kelola akun login Guru dan Administrator dengan keamanan SHA-256.</p>
             </div>
-            <button class="btn btn-primary btn-sm" onclick="App.openAddUserModal()">
-              ➕ Tambah Pengguna Baru
-            </button>
+            <div class="flex items-center gap-2">
+              <button class="btn btn-outline btn-sm" onclick="App.loadUsersTable()">Perbarui Data</button>
+              <button class="btn btn-primary btn-sm" onclick="App.openAddUserModal()">➕ Tambah Pengguna Baru</button>
+            </div>
           </div>
-
           <div class="table-responsive">
             <table class="table">
               <thead>
@@ -739,13 +920,13 @@
                   <th>Nama Lengkap</th>
                   <th>Email</th>
                   <th>Peran</th>
-                  <th>Status</th>
+                  <th>Status Akun</th>
                   <th>Login Terakhir</th>
-                  <th>Aksi</th>
+                  <th style="width: 120px;">Aksi</th>
                 </tr>
               </thead>
               <tbody id="usersTableBody">
-                <tr><td colspan="7" class="text-center text-muted" style="padding: 2rem;">Memuat data pengguna...</td></tr>
+                <tr><td colspan="7" class="text-center text-muted" style="padding: 2rem;">Memuat pengguna...</td></tr>
               </tbody>
             </table>
           </div>
@@ -753,222 +934,221 @@
       </section>
 
       <!-- ======================================================== -->
-      <!-- SECTION 9: MONITORING ABSENSI (FASE 2) -->
+      <!-- SECTION 9: MONITORING ABSENSI (CRUD LENGKAP)             -->
       <!-- ======================================================== -->
       <section id="adminSection-absensi" class="hidden">
-        <div class="phase-preview-card">
-          <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <!-- Rekap Angka Kehadiran -->
+        <div class="stats-grid">
+          <div class="stat-card">
             <div>
-              <div class="flex items-center gap-3">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">Monitoring & Rekapitulasi Absensi</h3>
-                <span class="phase-header-badge">Fase 2 - Dalam Pengembangan</span>
-              </div>
-              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Pemantauan rekap kehadiran harian dan bulanan siswa di setiap rombongan belajar.</p>
+              <div class="stat-val" id="absensiSummaryTotal">0</div>
+              <div class="stat-label">Total Peserta Didik</div>
             </div>
-            <span class="badge badge-dev">Tabel: SESI_ABSENSI & ABSENSI</span>
+            <div class="stat-icon" style="background-color: #e0f2fe; color: #0284c7;">👥</div>
           </div>
-
-          <div style="background-color: var(--warning-light); border: 1px dashed var(--warning); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.8125rem; color: #92400e;">
-            <strong>Status Pengembangan:</strong> Modul ini akan menampilkan rekap presensi (Hadir, Sakit, Izin, Alpa) yang diinput oleh Guru Kelas/Mata Pelajaran secara real-time.
+          <div class="stat-card">
+            <div>
+              <div class="stat-val" id="absensiSummaryHadir" style="color: #059669;">0</div>
+              <div class="stat-label">Hadir Hari Ini</div>
+            </div>
+            <div class="stat-icon" style="background-color: #ecfdf5; color: #059669;">✅</div>
           </div>
+          <div class="stat-card">
+            <div>
+              <div class="stat-val" id="absensiSummarySakit" style="color: #d97706;">0</div>
+              <div class="stat-label">Sakit / Izin</div>
+            </div>
+            <div class="stat-icon" style="background-color: #fffbeb; color: #d97706;">🏥</div>
+          </div>
+          <div class="stat-card">
+            <div>
+              <div class="stat-val" id="absensiSummaryPersen" style="color: #2563eb;">100%</div>
+              <div class="stat-label">Persentase Kehadiran</div>
+            </div>
+            <div class="stat-icon" style="background-color: #eff6ff; color: #2563eb;">📈</div>
+          </div>
+        </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h4 class="card-title text-sm">Pratinjau Rekap Kehadiran Rombel Hari Ini</h4>
+        <div class="card">
+          <div class="card-header flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h3 class="card-title">Rekapitulasi Kehadiran Siswa Per Rombel</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Hasil pencatatan presensi real-time dari seluruh kelas.</p>
             </div>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Rombel</th>
-                    <th>Total Siswa</th>
-                    <th>Hadir</th>
-                    <th>Sakit</th>
-                    <th>Izin</th>
-                    <th>Alpa</th>
-                    <th>% Kehadiran</th>
-                    <th>Status Pengisian</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Kelas 1A</strong></td>
-                    <td>28</td>
-                    <td>27</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td><strong>96.4%</strong></td>
-                    <td><span class="badge badge-active">SUDAH TERISI</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Kelas 1B</strong></td>
-                    <td>28</td>
-                    <td>28</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td><strong>100%</strong></td>
-                    <td><span class="badge badge-active">SUDAH TERISI</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Kelas 2A</strong></td>
-                    <td>30</td>
-                    <td>29</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td><strong>96.7%</strong></td>
-                    <td><span class="badge badge-active">SUDAH TERISI</span></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="flex items-center gap-2">
+              <button class="btn btn-outline btn-sm" onclick="App.loadAbsensiMonitoring()">Perbarui Rekap</button>
+              <button class="btn btn-primary btn-sm" onclick="App.openQuickAbsensiModal()">📝 Catat Presensi</button>
             </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Rombongan Belajar</th>
+                  <th>Tingkat</th>
+                  <th>Total Siswa</th>
+                  <th>Hadir</th>
+                  <th>Sakit</th>
+                  <th>Izin</th>
+                  <th>Alpa</th>
+                  <th>% Kehadiran</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="monitoringAbsensiTableBody">
+                <tr><td colspan="9" class="text-center text-muted" style="padding: 2rem;">Memuat data absensi...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
       <!-- ======================================================== -->
-      <!-- SECTION 10: MONITORING NILAI (FASE 2) -->
+      <!-- SECTION 10: MONITORING NILAI (CRUD LENGKAP)              -->
       <!-- ======================================================== -->
       <section id="adminSection-nilai" class="hidden">
-        <div class="phase-preview-card">
-          <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <!-- Rekap Nilai -->
+        <div class="stats-grid">
+          <div class="stat-card">
             <div>
-              <div class="flex items-center gap-3">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">Monitoring Penilaian & Rapor</h3>
-                <span class="phase-header-badge">Fase 2 - Dalam Pengembangan</span>
-              </div>
-              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Pemantauan input nilai formatif, sumatif, capaian tujuan pembelajaran, dan leger nilai.</p>
+              <div class="stat-val" id="nilaiSummaryTotalSiswa">0</div>
+              <div class="stat-label">Siswa Terekam Nilai</div>
             </div>
-            <span class="badge badge-dev">Tabel: PENILAIAN & NILAI</span>
+            <div class="stat-icon" style="background-color: #e0f2fe; color: #0284c7;">📑</div>
           </div>
-
-          <div style="background-color: var(--warning-light); border: 1px dashed var(--warning); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.8125rem; color: #92400e;">
-            <strong>Status Pengembangan:</strong> Modul ini menyajikan ringkasan nilai siswa dari guru pengampu, status kelengkapan nilai per mata pelajaran, dan ekspor leger nilai.
+          <div class="stat-card">
+            <div>
+              <div class="stat-val" id="nilaiSummaryRataRata" style="color: #059669;">85</div>
+              <div class="stat-label">Rata-Rata Capaian Nilai</div>
+            </div>
+            <div class="stat-icon" style="background-color: #ecfdf5; color: #059669;">🎯</div>
           </div>
+          <div class="stat-card">
+            <div>
+              <div class="stat-val" id="nilaiSummaryKetuntasan" style="color: #2563eb;">95.2%</div>
+              <div class="stat-label">Tingkat Ketuntasan (KKTP)</div>
+            </div>
+            <div class="stat-icon" style="background-color: #eff6ff; color: #2563eb;">🏆</div>
+          </div>
+        </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h4 class="card-title text-sm">Pratinjau Kelengkapan Nilai Semester</h4>
+        <div class="card">
+          <div class="card-header flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h3 class="card-title">Leger & Rekapitulasi Nilai Siswa</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Monitoring penilaian formatif, sumatif, dan predikat ketercapaian tujuan pembelajaran.</p>
             </div>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Kelas</th>
-                    <th>Mata Pelajaran</th>
-                    <th>Guru Pengampu</th>
-                    <th>Formatif TP</th>
-                    <th>Sumatif Akhir</th>
-                    <th>Status Kelengkapan</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Kelas 1A</strong></td>
-                    <td>Pendidikan Pancasila</td>
-                    <td>Siti Aminah, S.Pd.SD</td>
-                    <td>4 TP Lengkap</td>
-                    <td>Tuntas</td>
-                    <td><span class="badge badge-active">100% LENGKAP</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Kelas 1A</strong></td>
-                    <td>Bahasa Indonesia</td>
-                    <td>Siti Aminah, S.Pd.SD</td>
-                    <td>4 TP Lengkap</td>
-                    <td>Tuntas</td>
-                    <td><span class="badge badge-active">100% LENGKAP</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Kelas 1A</strong></td>
-                    <td>Matematika</td>
-                    <td>Siti Aminah, S.Pd.SD</td>
-                    <td>3 TP dari 4</td>
-                    <td>Menunggu</td>
-                    <td><span class="badge badge-dev">75% TERISI</span></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="flex items-center gap-2">
+              <button class="btn btn-outline btn-sm" onclick="App.loadNilaiMonitoring()">Perbarui Data</button>
+              <button class="btn btn-primary btn-sm" onclick="App.openInputNilaiModal()">➕ Input Nilai Siswa</button>
             </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>NIS</th>
+                  <th>Nama Lengkap Siswa</th>
+                  <th>Kelas</th>
+                  <th>Nilai Formatif</th>
+                  <th>Nilai Sumatif</th>
+                  <th>Nilai Akhir</th>
+                  <th>Predikat</th>
+                  <th>Keterangan</th>
+                </tr>
+              </thead>
+              <tbody id="monitoringNilaiTableBody">
+                <tr><td colspan="8" class="text-center text-muted" style="padding: 2rem;">Memuat data penilaian...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
       <!-- ======================================================== -->
-      <!-- SECTION 11: PENGATURAN SISTEM (FASE 2) -->
+      <!-- SECTION 11: PENGATURAN SISTEM (LENGKAP & OPERASIONAL)     -->
       <!-- ======================================================== -->
       <section id="adminSection-pengaturan" class="hidden">
-        <div class="phase-preview-card">
-          <div class="flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
-            <div>
-              <div class="flex items-center gap-3">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">Pengaturan Sistem & Database</h3>
-                <span class="phase-header-badge">Fase 2 - Dalam Pengembangan</span>
-              </div>
-              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Konfigurasi parameter aplikasi, tautan Google Spreadsheet, dan pemeliharaan data.</p>
-            </div>
-            <span class="badge badge-active">STATUS: TERKONEKSI</span>
+        <!-- Form Tahun Pelajaran -->
+        <div class="card" style="margin-bottom: 1.5rem;">
+          <div class="card-header">
+            <h3 class="card-title">Pengaturan Tahun Pelajaran & Semester Aktif</h3>
           </div>
-
-          <!-- Info Database Terhubung -->
-          <div class="card" style="margin-bottom: 1.5rem;">
-            <div class="card-header">
-              <h4 class="card-title text-sm">Informasi Database Google Sheets Aktif</h4>
-            </div>
-            <div class="card-body">
+          <div class="card-body">
+            <form id="settingsTpForm" onsubmit="App.submitSettings(event)">
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
-                <div>
-                  <span class="text-xs text-muted">ID Spreadsheet Database:</span>
-                  <div style="font-family: monospace; font-size: 0.8125rem; word-break: break-all; margin-top: 0.25rem; color: var(--primary); font-weight: 600;">
-                    1uTX2pNXo4exeN6tnszLibHC9Hpjsst_s3qoCi6AV3G0
-                  </div>
+                <div class="form-group">
+                  <label class="form-label" for="settingNamaTp">Tahun Pelajaran *</label>
+                  <input type="text" id="settingNamaTp" class="form-control" value="2026/2027" required />
                 </div>
-                <div>
-                  <span class="text-xs text-muted">Jumlah Tabel Data:</span>
-                  <div style="font-weight: 700; font-size: 0.9375rem; margin-top: 0.25rem;">
-                    17 Sheet Database
-                  </div>
+                <div class="form-group">
+                  <label class="form-label" for="settingSemester">Semester Berjalan *</label>
+                  <select id="settingSemester" class="form-control" required>
+                    <option value="Ganjil">Semester Ganjil (1)</option>
+                    <option value="Genap">Semester Genap (2)</option>
+                  </select>
                 </div>
-                <div>
-                  <span class="text-xs text-muted">Backend Engine:</span>
-                  <div style="font-weight: 700; font-size: 0.9375rem; margin-top: 0.25rem; color: #059669;">
-                    Google Apps Script (V8 Engine)
-                  </div>
+              </div>
+              <div style="margin-top: 1rem; text-align: right;">
+                <button type="submit" class="btn btn-primary btn-sm">💾 Perbarui Tahun Pelajaran</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Info Database Terhubung -->
+        <div class="card" style="margin-bottom: 1.5rem;">
+          <div class="card-header flex items-center justify-between" style="flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h3 class="card-title">Informasi & Kesehatan Database Google Sheets</h3>
+              <p class="text-xs text-muted" style="margin-top: 0.25rem;">Aplikasi ini terhubung langsung ke Google Sheets sebagai database relasional backend.</p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="App.syncDatabaseAction()">🔄 Sinkronkan Database</button>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+              <div>
+                <span class="text-xs text-muted">ID Spreadsheet Database:</span>
+                <div id="settingsSpreadsheetId" style="font-family: monospace; font-size: 0.8125rem; word-break: break-all; margin-top: 0.25rem; color: var(--primary); font-weight: 600;">
+                  Memuat...
+                </div>
+              </div>
+              <div>
+                <span class="text-xs text-muted">Status Koneksi Backend:</span>
+                <div style="font-weight: 700; font-size: 0.9375rem; margin-top: 0.25rem; color: #059669;">
+                  ● TERHUBUNG (V8 ENGINE)
+                </div>
+              </div>
+              <div>
+                <span class="text-xs text-muted">Buka Lembar Spreadsheet:</span>
+                <div style="margin-top: 0.25rem;">
+                  <a id="settingsSpreadsheetUrlLink" href="#" target="_blank" class="btn btn-outline btn-sm">
+                    📂 Buka di Google Drive
+                  </a>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Roadmap Fitur Pengaturan -->
-          <div class="card">
-            <div class="card-header">
-              <h4 class="card-title text-sm">Daftar Fitur Pengaturan Sistem Terjadwal</h4>
-            </div>
-            <div class="card-body">
-              <div class="roadmap-step">
-                <div class="roadmap-num">1</div>
-                <div>
-                  <strong class="text-sm">Tahun Pelajaran & Semester Aktif</strong>
-                  <p class="text-xs text-muted">Pengaturan transisi semester ganjil/genap dan penutupan tahun ajaran.</p>
-                </div>
-              </div>
-              <div class="roadmap-step">
-                <div class="roadmap-num">2</div>
-                <div>
-                  <strong class="text-sm">Cadangan Data (Backup & Restore)</strong>
-                  <p class="text-xs text-muted">Pencadangan berkala otomatis ke folder Google Drive khusus.</p>
-                </div>
-              </div>
-              <div class="roadmap-step">
-                <div class="roadmap-num">3</div>
-                <div>
-                  <strong class="text-sm">Kebijakan Keamanan & Sesi</strong>
-                  <p class="text-xs text-muted">Pengaturan masa berlaku token sesi, batasan percobaan login gagal, dan pembersihan log aktivitas usang.</p>
-                </div>
-              </div>
-            </div>
+        <!-- Tabel Monitoring Struktur Database Google Sheets -->
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title text-sm">Status & Jumlah Baris 17 Sheet Database</h4>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nama Tabel Sheet</th>
+                  <th>Jumlah Data (Baris)</th>
+                  <th>Status Operasional</th>
+                </tr>
+              </thead>
+              <tbody id="settingsTableListBody">
+                <tr><td colspan="3" class="text-center text-muted" style="padding: 2rem;">Memuat skema tabel...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
