@@ -11,20 +11,11 @@ const App = {
   },
 
   init: function() {
-    this.updateApiStatusIndicator();
-
-    // Periksa apakah ada token yang tersimpan di sessionStorage saat refresh
     const savedToken = sessionStorage.getItem('ag_token');
     const apiUrl = APP_CONFIG.getApiUrl();
 
-    if (!apiUrl) {
-      this.showView('loginView');
-      this.openApiConfigModal();
-      return;
-    }
-
-    if (savedToken) {
-      this.showLoading(true, 'Memverifikasi sesi Anda...');
+    if (savedToken && apiUrl) {
+      this.showLoading(true, 'Memverifikasi sesi...');
       ApiClient.request('verifySession', { token: savedToken })
         .then((res) => {
           this.showLoading(false);
@@ -45,19 +36,6 @@ const App = {
         });
     } else {
       this.showView('loginView');
-    }
-  },
-
-  // Update status indikator koneksi API di top banner
-  updateApiStatusIndicator: function() {
-    const url = APP_CONFIG.getApiUrl();
-    const statusText = document.getElementById('apiStatusText');
-    if (statusText) {
-      if (url) {
-        statusText.innerHTML = '🟢 Terhubung ke Apps Script: <code style="color:#93c5fd;">' + url.substring(0, 35) + '...</code>';
-      } else {
-        statusText.innerHTML = '🔴 Backend Apps Script belum terhubung.';
-      }
     }
   },
 
@@ -201,42 +179,6 @@ const App = {
 
   closeInDevelopmentModal: function() {
     document.getElementById('inDevelopmentModal').classList.remove('active');
-  },
-
-  openApiConfigModal: function() {
-    const currentUrl = APP_CONFIG.getApiUrl();
-    document.getElementById('apiConfigUrl').value = currentUrl;
-    document.getElementById('apiConfigModal').classList.add('active');
-  },
-
-  closeApiConfigModal: function() {
-    document.getElementById('apiConfigModal').classList.remove('active');
-  },
-
-  saveApiConfig: async function(e) {
-    e.preventDefault();
-    const url = document.getElementById('apiConfigUrl').value.trim();
-    if (!url) {
-      this.showToast('URL Web App tidak boleh kosong.', 'warning');
-      return;
-    }
-    APP_CONFIG.setApiUrl(url);
-    this.updateApiStatusIndicator();
-
-    this.showLoading(true, 'Menguji koneksi ke backend Apps Script...');
-    try {
-      const res = await ApiClient.ping();
-      this.showLoading(false);
-      if (res && res.success) {
-        this.showToast('Koneksi berhasil terhubung ke ' + (res.data.appName || 'Apps Script') + '!', 'success');
-        this.closeApiConfigModal();
-      } else {
-        this.showToast('Terhubung, namun respons backend tidak standar.', 'warning');
-      }
-    } catch (err) {
-      this.showLoading(false);
-      this.showToast('Gagal terhubung: ' + err.message, 'error');
-    }
   },
 
   toggleSidebar: function(sidebarId) {

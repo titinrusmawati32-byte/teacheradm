@@ -20,8 +20,8 @@ const ApiClient = {
   request: async function(action, payload = {}) {
     const apiUrl = APP_CONFIG.getApiUrl();
 
-    if (!apiUrl || apiUrl.includes('MASUKKAN_URL')) {
-      throw new Error('URL Google Apps Script belum dikonfigurasi. Silakan atur URL Web App melalui menu "Konfigurasi API" di bilah atas.');
+    if (!apiUrl || apiUrl.trim() === '') {
+      throw new Error('URL backend database Google Apps Script belum diisi di js/config.js.');
     }
 
     const requestBody = JSON.stringify({

@@ -13,14 +13,6 @@
 </head>
 <body>
 
-  <!-- Top Banner: Status Koneksi Backend Apps Script -->
-  <aside class="api-banner">
-    <div id="apiStatusText">Memeriksa koneksi ke Google Apps Script...</div>
-    <div>
-      <a onclick="App.openApiConfigModal()">⚙️ Atur URL Web App</a>
-    </div>
-  </aside>
-
   <!-- Toast Notification Container -->
   <div id="toastContainer" class="toast-container"></div>
 
@@ -30,49 +22,6 @@
     <p id="loadingMessage" style="margin-top: 1rem; font-weight: 600; color: var(--text-secondary); font-size: 0.9375rem;">
       Memproses data...
     </p>
-  </div>
-
-  <!-- Modal: Konfigurasi URL Google Apps Script Web App -->
-  <div id="apiConfigModal" class="modal-overlay">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h3 class="card-title">Pengaturan Koneksi Backend Apps Script</h3>
-        <button class="btn btn-outline btn-sm" onclick="App.closeApiConfigModal()">✕</button>
-      </div>
-      <form onsubmit="App.saveApiConfig(event)">
-        <div class="modal-body">
-          <p class="text-sm text-secondary" style="margin-bottom: 1rem;">
-            Karena Frontend di-hosting di GitHub dan Database/Backend di Google Apps Script, aplikasi ini membutuhkan URL Web App yang telah di-deploy.
-          </p>
-
-          <div class="form-group">
-            <label class="form-label" for="apiConfigUrl">URL Google Apps Script Web App</label>
-            <input
-              type="url"
-              id="apiConfigUrl"
-              class="form-control"
-              placeholder="https://script.google.com/macros/s/.../exec"
-              required
-            />
-            <small class="text-xs text-muted" style="display:block; margin-top: 4px;">
-              Diperoleh dari menu <strong>Deploy > Manage deployments > Web app URL</strong> di Google Apps Script.
-            </small>
-          </div>
-
-          <div style="background-color:#eff6ff; border:1px solid #bfdbfe; border-radius: var(--radius-sm); padding:0.75rem; font-size:0.75rem; color:#1e40af;">
-            <strong>Tips Pengaturan Deployment:</strong><br />
-            Pastikan pada saat membuat Web App Deployment di Apps Script:<br />
-            • <em>Execute as</em>: <code>Me (email Anda)</code><br />
-            • <em>Who has access</em>: <code>Anyone</code>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline btn-sm" onclick="App.closeApiConfigModal()">Tutup</button>
-          <button type="submit" class="btn btn-primary btn-sm">Simpan & Uji Koneksi</button>
-        </div>
-      </form>
-    </div>
   </div>
 
   <!-- Modal: Fitur Dalam Tahap Pengembangan (Fase 2) -->
